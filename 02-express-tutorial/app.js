@@ -1,17 +1,41 @@
-const express = require('express')
-const { products } = require("./data");
+const express = require("express")
+const { products, people } = require("./data");
+const peopleRouter = require("./routes/people")
 
 const app = express()
 
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+const logger = (req, res, next) => {
+    console.log('method : ' + req.method)
+    console.log('url : ' + req.url)
+    next()
+}
+
+// app.get('/', logger, (req, res, next) => {
+//     next()
+// })
+
+app.use(logger)
+
 app.use(express.static("./public"));
 
-app.get("/api/v1/test", (req, res, next) => {
+app.use("/api/v1/people", peopleRouter);
+
+
+
+
+
+app.get("/api/v1", (req, res, next) => {
     res.json({ message: "It worked!" });
 })
 
 app.get("/api/v1/products", (req, res, next) => {
     res.json(products);
 })
+
+
 
 app.get("/api/v1/products/:productId", function (req, res) {
     const productId = parseInt(req.params.productId)
