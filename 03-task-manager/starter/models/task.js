@@ -5,14 +5,13 @@ const taskSchema = new Schema(
     {
         name : {
             type : String,
-            required : true,
-            maxLenght : 20,
+            required : [true, 'must provide name'],
+            maxLenght : [20, 'name cannot be more than 20 characters'],
             trim: true
         },
         completed : {
-            type : String,
-            required : true,
-            default: false
+            type : Boolean,
+            default : false,
         },    
 });
 
